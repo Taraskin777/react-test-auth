@@ -7,7 +7,6 @@ export const AuthForm = (): JSX.Element => {
   const [nonExistUser, setNonExistUser] = useState<boolean>(true);
   const [shortPassword, setShortPassword] = useState<boolean>(false);
 
-  console.log(nonExistUser);
 
   const enteredName = useRef<HTMLInputElement | null>(null);
   const enteredPassword = useRef<HTMLInputElement | null>(null);
@@ -16,30 +15,6 @@ export const AuthForm = (): JSX.Element => {
 
   const name: string = "testuser";
   const password: string = "testpassword123";
-
-  //   const handleSubmit = (event: React.FormEvent) => {
-  //     event.preventDefault();
-
-  //     if (
-  //       enteredPassword.current &&
-  //       enteredPassword.current.value &&
-  //       enteredPassword.current.value.length < 6
-  //     ) {
-  //       setShortPassword(true);
-  //     } else {
-  //       setShortPassword(false);
-  //     }
-
-  //     if (
-  //       enteredName.current?.value === name &&
-  //       enteredPassword.current?.value === password && !shortPassword
-  //     ) {
-  //       setAuthorizedUser(true);
-  //       router.push("/table");
-  //     } else {
-  //       setNonExistUser(false);
-  //     }
-  //   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();

@@ -30,29 +30,45 @@ interface Results {
 export const UsersList = (): JSX.Element => {
   const [data, setData] = useState<Data | null>(null);
   const [pages, setPages] = useState<number | undefined>(0);
-  console.log(pages);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const resultsPerPage = 10;
 
   useEffect(() => {
-    fetch("https://technical-task-api.icapgroupgmbh.com/api/table/")
+    // Виконуємо запит до серверу з врахуванням поточної сторінки та ліміту результатів
+    fetch(
+      `https://technical-task-api.icapgroupgmbh.com/api/table/?limit=${resultsPerPage}&offset=${
+        (currentPage - 1) * resultsPerPage
+      }`
+    )
       .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => console.log(error));
-  }, []);
-
-  useEffect(() => {
-    if (data && data?.count > 0) {
-      setPages(Math.ceil(data.count / 10));
-    }
-  }, [data]);
+      .then((responseData: Data) => {
+        setData(responseData);
+      })
+      .catch((error) => {
+        console.error("Помилка отримання даних:", error);
+      });
+  }, [currentPage]); // Залежність включає поточну сторінку
 
   if (data === null) {
     return <div>Loading...</div>;
   }
 
+  const totalPages = Math.ceil(data.count / resultsPerPage); // Загальна кількість сторінок
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const pageNumbers = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  );
+
   return (
     <Table>
-      <div>Pages: {pages}</div>
-      <Link href={data.next}>Next</Link>
+      <div>Pages: {totalPages}</div>
+      <Link href={data.next || "/"}>Next</Link>
       <TableHeader>
         <Name>Name</Name>
         <Phone>Phone number</Phone>
@@ -74,6 +90,19 @@ export const UsersList = (): JSX.Element => {
           </li>
         ))}
       </Users>
+      <div>
+        {pageNumbers.map((pageNumber) => (
+          <button
+            key={pageNumber}
+            onClick={() => handlePageChange(pageNumber)}
+            style={{
+              fontWeight: pageNumber === currentPage ? "bold" : "normal",
+            }}
+          >
+            {pageNumber}
+          </button>
+        ))}
+      </div>
     </Table>
   );
 };

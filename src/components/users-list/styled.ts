@@ -20,16 +20,17 @@ export const Users = styled.ul`
     align-items: center;
     margin-bottom: 10px;
     padding: 0 20px 0 20px;
+    overflow-x: hidden;
   }
 `;
 
 export const Name = styled.p`
-  width: 10vw;
+  width: 15vw;
   margin: 0;
 `;
 
 export const Phone = styled.p`
-  width: 15vw;
+  width: 10vw;
 `;
 export const Address = styled.p`
   width: 25vw;
