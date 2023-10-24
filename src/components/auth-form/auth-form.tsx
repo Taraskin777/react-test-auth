@@ -5,6 +5,7 @@ import { Title, Auth, Control, Submit, Error } from "./styled";
 export const AuthForm = (): JSX.Element => {
   const [authorizedUser, setAuthorizedUser] = useState<boolean>(false);
   const [nonExistUser, setNonExistUser] = useState<boolean>(true);
+  const [shortPassword, setShortPassword] = useState<boolean>(false);
 
   console.log(nonExistUser);
 
@@ -16,17 +17,49 @@ export const AuthForm = (): JSX.Element => {
   const name: string = "testuser";
   const password: string = "testpassword123";
 
+  //   const handleSubmit = (event: React.FormEvent) => {
+  //     event.preventDefault();
+
+  //     if (
+  //       enteredPassword.current &&
+  //       enteredPassword.current.value &&
+  //       enteredPassword.current.value.length < 6
+  //     ) {
+  //       setShortPassword(true);
+  //     } else {
+  //       setShortPassword(false);
+  //     }
+
+  //     if (
+  //       enteredName.current?.value === name &&
+  //       enteredPassword.current?.value === password && !shortPassword
+  //     ) {
+  //       setAuthorizedUser(true);
+  //       router.push("/table");
+  //     } else {
+  //       setNonExistUser(false);
+  //     }
+  //   };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (
-      enteredName.current?.value === name &&
-      enteredPassword.current?.value === password
-    ) {
-      setAuthorizedUser(true);
-      router.push("/table");
+    if (enteredPassword.current && enteredPassword.current.value.length < 6) {
+      setNonExistUser(true);
+      setShortPassword(true);
     } else {
-      setNonExistUser(false);
+      setShortPassword(false);
+
+      if (enteredName.current?.value === name) {
+        if (enteredPassword.current?.value === password) {
+          setAuthorizedUser(true);
+          router.push("/table");
+        } else {
+          setNonExistUser(false);
+        }
+      } else {
+        setNonExistUser(false);
+      }
     }
   };
 
@@ -58,6 +91,9 @@ export const AuthForm = (): JSX.Element => {
           You wrote failed password or name. Or user with this credentials
           doesn't exist.
         </Error>
+      )}
+      {shortPassword && (
+        <Error>Password cannot be shorter than six characters.</Error>
       )}
     </>
   );

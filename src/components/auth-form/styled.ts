@@ -59,4 +59,6 @@ export const Error = styled.div`
  margin: 30px;
  position: absolute;
  top: 70vh;
+ font-size:20px;
+ font-weight: 600;
 `
