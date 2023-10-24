@@ -43,7 +43,7 @@ export const UsersList = (): JSX.Element => {
     if (data && data?.count > 0) {
       setPages(Math.ceil(data.count / 10));
     }
-  }, []);
+  }, [data]);
 
   if (data === null) {
     return <div>Loading...</div>;
