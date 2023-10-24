@@ -52,3 +52,11 @@ export const Submit = styled.div`
     }
   }
 `;
+
+
+export const Error = styled.div`
+ color: red;
+ margin: 30px;
+ position: absolute;
+ top: 70vh;
+`
