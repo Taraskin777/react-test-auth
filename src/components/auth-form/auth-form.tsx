@@ -65,7 +65,7 @@ export const AuthForm = (): JSX.Element => {
       {!nonExistUser && (
         <Error>
           You wrote failed password or name. Or user with this credentials
-          doesn't exist.
+          doesn&apos;t exist.
         </Error>
       )}
       {shortPassword && (
