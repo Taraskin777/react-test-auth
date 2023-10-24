@@ -8,7 +8,7 @@ export const Table = styled.div`
 
 export const TableHeader = styled.div`
   display: flex;
-  /* justify-content: space-between; */
+  align-items: center;
   background-color: beige;
   padding: 0 20px 0 20px;
 `;
@@ -17,14 +17,15 @@ export const Users = styled.ul`
   padding: 0;
   li {
     display: flex;
-    /* justify-content: space-between; */
+    align-items: center;
     margin-bottom: 10px;
     padding: 0 20px 0 20px;
   }
 `;
 
 export const Name = styled.p`
-  width: 15vw;
+  width: 10vw;
+  margin: 0;
 `;
 
 export const Phone = styled.p`

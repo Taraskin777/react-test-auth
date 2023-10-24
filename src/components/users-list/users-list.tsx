@@ -29,7 +29,8 @@ interface Results {
 
 export const UsersList = (): JSX.Element => {
   const [data, setData] = useState<Data | null>(null);
-  console.log(data);
+  const [pages, setPages] = useState<number | undefined>(0);
+  console.log(pages);
 
   useEffect(() => {
     fetch("https://technical-task-api.icapgroupgmbh.com/api/table/")
@@ -38,13 +39,19 @@ export const UsersList = (): JSX.Element => {
       .catch((error) => console.log(error));
   }, []);
 
+  useEffect(() => {
+    if (data && data?.count > 0) {
+      setPages(Math.ceil(data.count / 10));
+    }
+  }, []);
+
   if (data === null) {
     return <div>Loading...</div>;
   }
 
   return (
     <Table>
-      <div>{data.count}</div>
+      <div>Pages: {pages}</div>
       <Link href={data.next}>Next</Link>
       <TableHeader>
         <Name>Name</Name>
