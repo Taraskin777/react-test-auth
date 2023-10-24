@@ -7,7 +7,6 @@ export const AuthForm = (): JSX.Element => {
   const [nonExistUser, setNonExistUser] = useState<boolean>(true);
   const [shortPassword, setShortPassword] = useState<boolean>(false);
 
-
   const enteredName = useRef<HTMLInputElement | null>(null);
   const enteredPassword = useRef<HTMLInputElement | null>(null);
 
@@ -31,9 +30,11 @@ export const AuthForm = (): JSX.Element => {
           router.push("/table");
         } else {
           setNonExistUser(false);
+          console.log("User does not exist");
         }
       } else {
         setNonExistUser(false);
+        console.log("User does not exist");
       }
     }
   };
