@@ -1,6 +1,6 @@
 import { Title, Auth, Control, Submit } from "./styled";
 
-export const AuthForm = () => {
+export const AuthForm = (): JSX.Element => {
   return (
     <Auth>
       <Title>Sign In</Title>
