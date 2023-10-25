@@ -83,7 +83,7 @@ export const UsersList = (): JSX.Element => {
 
   const handleSaveUser = (updatedUser: Results) => {
     fetch(
-      `https://technical-task-api.icapgroupgmbh.com/api/table/${updatedUser.id}`,
+      `https://technical-task-api.icapgroupgmbh.com/api/table/${updatedUser.id}/`,
       {
         method: "PUT",
         headers: {
