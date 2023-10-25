@@ -29,7 +29,7 @@ export const TableHeader = styled.div`
 `;
 
 export const Users = styled.ul`
-  padding: 0;
+  padding: 0 0 0 20px;
   li {
     display: flex;
     align-items: center;
@@ -40,7 +40,6 @@ export const Users = styled.ul`
 
 export const Name = styled.p`
   width: 15vw;
-  margin: 0;
 `;
 
 export const Phone = styled.p`
@@ -81,4 +80,24 @@ export const CurrentPage = styled.button`
 
 export const Dots = styled.span`
   margin-right: 10px;
+`;
+
+export const EditUser = styled.div`
+  position: absolute;
+`;
+
+export const EditName = styled.input`
+  width: 15vw;
+`;
+export const EditPhone = styled.input`
+  width: 10vw;
+`;
+export const EditAddress = styled.input`
+  width: 25vw;
+`;
+export const EditBirthday = styled.input`
+  width: 10vw;
+`;
+export const EditEmail = styled.input`
+width: 25vw;
 `;
