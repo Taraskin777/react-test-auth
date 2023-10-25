@@ -13,6 +13,7 @@ import {
   PageButton,
   CurrentPage,
   Dots,
+  PrevNextPage,
 } from "./styled";
 
 interface Data {
@@ -70,7 +71,27 @@ export const UsersList = (): JSX.Element => {
 
   return (
     <Table>
-      <Link href={data.next || "/"}>Next</Link>
+      <PrevNextPage>
+        <button
+          onClick={() => {
+            if (data.previous) {
+              setCurrentPage(currentPage - 1);
+            }
+          }}
+        >
+          Previous Page
+        </button>
+        <button
+          onClick={() => {
+            if (data.next) {
+              setCurrentPage(currentPage + 1);
+            }
+          }}
+        >
+          Next Page
+        </button>
+      </PrevNextPage>
+
       <TableHeader>
         <Name>Name</Name>
         <Phone>Phone number</Phone>
@@ -99,7 +120,7 @@ export const UsersList = (): JSX.Element => {
           }
 
           if (
-            pageNumber <= 3 ||
+            pageNumber <= 1 ||
             pageNumber === totalPages ||
             (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)
           ) {
@@ -113,7 +134,7 @@ export const UsersList = (): JSX.Element => {
               </PageButton>
             );
           } else if (
-            (pageNumber === 4 && currentPage > 4) ||
+            (pageNumber === 2 && currentPage > 3) ||
             (pageNumber === totalPages - 1 && totalPages - currentPage > 2)
           ) {
             return <Dots key={pageNumber}>. . .</Dots>;
