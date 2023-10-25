@@ -9,6 +9,10 @@ import {
   Address,
   Birthday,
   Email,
+  PagesButtons,
+  PageButton,
+  CurrentPage,
+  Dots,
 } from "./styled";
 
 interface Data {
@@ -35,7 +39,6 @@ export const UsersList = (): JSX.Element => {
   const resultsPerPage = 10;
 
   useEffect(() => {
-    // Виконуємо запит до серверу з врахуванням поточної сторінки та ліміту результатів
     fetch(
       `https://technical-task-api.icapgroupgmbh.com/api/table/?limit=${resultsPerPage}&offset=${
         (currentPage - 1) * resultsPerPage
@@ -48,13 +51,13 @@ export const UsersList = (): JSX.Element => {
       .catch((error) => {
         console.error("Помилка отримання даних:", error);
       });
-  }, [currentPage]); // Залежність включає поточну сторінку
+  }, [currentPage]);
 
   if (data === null) {
     return <div>Loading...</div>;
   }
 
-  const totalPages = Math.ceil(data.count / resultsPerPage); // Загальна кількість сторінок
+  const totalPages = Math.ceil(data.count / resultsPerPage);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -67,7 +70,6 @@ export const UsersList = (): JSX.Element => {
 
   return (
     <Table>
-      <div>Pages: {totalPages}</div>
       <Link href={data.next || "/"}>Next</Link>
       <TableHeader>
         <Name>Name</Name>
@@ -90,19 +92,36 @@ export const UsersList = (): JSX.Element => {
           </li>
         ))}
       </Users>
-      <div>
-        {pageNumbers.map((pageNumber) => (
-          <button
-            key={pageNumber}
-            onClick={() => handlePageChange(pageNumber)}
-            style={{
-              fontWeight: pageNumber === currentPage ? "bold" : "normal",
-            }}
-          >
-            {pageNumber}
-          </button>
-        ))}
-      </div>
+      <PagesButtons>
+        {pageNumbers.map((pageNumber) => {
+          if (pageNumber === currentPage) {
+            return <CurrentPage key={pageNumber}>{pageNumber}</CurrentPage>;
+          }
+
+          if (
+            pageNumber <= 3 ||
+            pageNumber === totalPages ||
+            (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)
+          ) {
+            return (
+              <PageButton
+                key={pageNumber}
+                onClick={() => handlePageChange(pageNumber)}
+                style={{ fontWeight: "normal" }}
+              >
+                {pageNumber}
+              </PageButton>
+            );
+          } else if (
+            (pageNumber === 4 && currentPage > 4) ||
+            (pageNumber === totalPages - 1 && totalPages - currentPage > 2)
+          ) {
+            return <Dots key={pageNumber}>. . .</Dots>;
+          }
+
+          return null;
+        })}
+      </PagesButtons>
     </Table>
   );
 };

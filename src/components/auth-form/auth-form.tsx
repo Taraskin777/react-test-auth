@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { Title, Auth, Control, Submit, Error } from "./styled";
 
 export const AuthForm = (): JSX.Element => {
-  const [authorizedUser, setAuthorizedUser] = useState<boolean>(false);
   const [nonExistUser, setNonExistUser] = useState<boolean>(true);
   const [shortPassword, setShortPassword] = useState<boolean>(false);
 
@@ -26,7 +25,6 @@ export const AuthForm = (): JSX.Element => {
 
       if (enteredName.current?.value === name) {
         if (enteredPassword.current?.value === password) {
-          setAuthorizedUser(true);
           router.push("/table");
         } else {
           setNonExistUser(false);

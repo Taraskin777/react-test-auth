@@ -4,6 +4,9 @@ export const Table = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-top: 40px;
+  margin-left: 30px;
+  margin-right: 30px;
 `;
 
 export const TableHeader = styled.div`
@@ -19,7 +22,7 @@ export const Users = styled.ul`
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-    padding: 0 20px 0 20px;
+
     overflow-x: hidden;
   }
 `;
@@ -40,4 +43,28 @@ export const Birthday = styled.p`
 `;
 export const Email = styled.p`
   width: 25vw;
+`;
+
+export const PagesButtons = styled.div``;
+
+export const PageButton = styled.button`
+  margin-right: 10px;
+  cursor: pointer;
+  transition: all 0.5s;
+  &:hover {
+    transform: scale(1.3);
+    transition: all 0.3s;
+  }
+`;
+
+export const CurrentPage = styled.button`
+  font-weight: bold;
+  margin-right: 10px;
+  transform: scale(1.3);
+  transition: all 0.5s;
+  cursor: pointer;
+`;
+
+export const Dots = styled.span`
+  margin-right: 10px;
 `;
