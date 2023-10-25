@@ -21,13 +21,6 @@ export const PrevNextPage = styled.div`
   }
 `;
 
-export const TableHeader = styled.div`
-  display: flex;
-  align-items: center;
-  background-color: beige;
-  padding: 0 20px 0 20px;
-`;
-
 export const Users = styled.ul`
   padding: 0 0 0 20px;
   li {
@@ -55,33 +48,6 @@ export const Email = styled.p`
   width: 25vw;
 `;
 
-export const PagesButtons = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-export const PageButton = styled.button`
-  margin-right: 10px;
-  cursor: pointer;
-  transition: all 0.5s;
-  &:hover {
-    transform: scale(1.3);
-    transition: all 0.3s;
-  }
-`;
-
-export const CurrentPage = styled.button`
-  font-weight: bold;
-  margin-right: 10px;
-  transform: scale(1.3);
-  transition: all 0.5s;
-  cursor: pointer;
-`;
-
-export const Dots = styled.span`
-  margin-right: 10px;
-`;
-
 export const EditUser = styled.div`
   position: absolute;
 `;
@@ -99,5 +65,5 @@ export const EditBirthday = styled.input`
   width: 10vw;
 `;
 export const EditEmail = styled.input`
-width: 25vw;
+  width: 25vw;
 `;

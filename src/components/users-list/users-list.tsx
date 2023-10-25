@@ -1,26 +1,10 @@
 import { useState, useEffect } from "react";
+import { TableHeader } from "../table-header";
+import { PageButtons } from "../page-buttons";
+import { PrevNext } from "../prev-next/prev-next";
 
-import {
-  Table,
-  TableHeader,
-  Users,
-  Name,
-  Phone,
-  Address,
-  Birthday,
-  Email,
-  PagesButtons,
-  PageButton,
-  CurrentPage,
-  Dots,
-  PrevNextPage,
-  EditUser,
-  EditName,
-  EditPhone,
-  EditAddress,
-  EditBirthday,
-  EditEmail,
-} from "./styled";
+import { Table, Users, Name, Phone, Address, Birthday, Email } from "./styled";
+import { EditUser } from "../edit-user";
 
 interface Data {
   count: number;
@@ -29,7 +13,7 @@ interface Data {
   results: Results[];
 }
 
-interface Results {
+export interface Results {
   id: number;
   name: string;
   email: string;
@@ -111,34 +95,14 @@ export const UsersList = (): JSX.Element => {
 
   return (
     <Table>
-      <PrevNextPage>
-        <button
-          onClick={() => {
-            if (data.previous) {
-              setCurrentPage(currentPage - 1);
-            }
-          }}
-        >
-          Previous Page
-        </button>
-        <button
-          onClick={() => {
-            if (data.next) {
-              setCurrentPage(currentPage + 1);
-            }
-          }}
-        >
-          Next Page
-        </button>
-      </PrevNextPage>
+      <PrevNext
+        prev={data.previous}
+        next={data.next}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+      />
 
-      <TableHeader>
-        <Name>Name</Name>
-        <Phone>Phone number</Phone>
-        <Address>Address</Address>
-        <Birthday>Birthday date</Birthday>
-        <Email>Email</Email>
-      </TableHeader>
+      <TableHeader />
 
       <Users>
         {data.results.map((person) => (
@@ -149,67 +113,16 @@ export const UsersList = (): JSX.Element => {
             <Birthday>{person.birthday_date}</Birthday>
             <Email>{person.email}</Email>
             {editingUser && editingUser.id === person.id ? (
-              <EditUser>
-                <EditName
-                  type="text"
-                  value={editingUser.name}
-                  onChange={(e) => {
-                    const updatedUser = {
-                      ...editingUser,
-                      name: e.target.value,
-                    };
-                    setEditingUser(updatedUser);
-                  }}
-                />
-                <EditPhone
-                  type="text"
-                  value={editingUser.phone_number}
-                  onChange={(e) => {
-                    const updatedUser = {
-                      ...editingUser,
-                      phone_number: e.target.value,
-                    };
-                    setEditingUser(updatedUser);
-                  }}
-                />
-                <EditAddress
-                  type="text"
-                  value={editingUser.address}
-                  onChange={(e) => {
-                    const updatedUser = {
-                      ...editingUser,
-                      address: e.target.value,
-                    };
-                    setEditingUser(updatedUser);
-                  }}
-                />
-                <EditBirthday
-                  type="date"
-                  value={editingUser.birthday_date}
-                  onChange={(e) => {
-                    const updatedUser = {
-                      ...editingUser,
-                      birthday_date: e.target.value,
-                    };
-                    setEditingUser(updatedUser);
-                  }}
-                />
-                <EditEmail
-                  type="text"
-                  value={editingUser.email}
-                  onChange={(e) => {
-                    const updatedUser = {
-                      ...editingUser,
-                      email: e.target.value,
-                    };
-                    setEditingUser(updatedUser);
-                  }}
-                />
-
-                <button onClick={() => handleSaveUser(editingUser)}>
-                  Save
-                </button>
-              </EditUser>
+              <EditUser
+                name={editingUser.name}
+                phone={editingUser.phone_number}
+                address={editingUser.address}
+                birthday={editingUser.birthday_date}
+                email={editingUser.email}
+                editingUser={editingUser}
+                setEditingUser={setEditingUser}
+                handleSaveUser={handleSaveUser}
+              />
             ) : (
               <button
                 onClick={() => {
@@ -224,36 +137,12 @@ export const UsersList = (): JSX.Element => {
           </li>
         ))}
       </Users>
-      <PagesButtons>
-        {pageNumbers.map((pageNumber) => {
-          if (pageNumber === currentPage) {
-            return <CurrentPage key={pageNumber}>{pageNumber}</CurrentPage>;
-          }
-
-          if (
-            pageNumber <= 1 ||
-            pageNumber === totalPages ||
-            (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)
-          ) {
-            return (
-              <PageButton
-                key={pageNumber}
-                onClick={() => handlePageChange(pageNumber)}
-                style={{ fontWeight: "normal" }}
-              >
-                {pageNumber}
-              </PageButton>
-            );
-          } else if (
-            (pageNumber === 2 && currentPage > 3) ||
-            (pageNumber === totalPages - 1 && totalPages - currentPage > 2)
-          ) {
-            return <Dots key={pageNumber}>. . .</Dots>;
-          }
-
-          return null;
-        })}
-      </PagesButtons>
+      <PageButtons
+        pageNumbers={pageNumbers}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePageChange={handlePageChange}
+      />
     </Table>
   );
 };
