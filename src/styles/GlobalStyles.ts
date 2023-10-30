@@ -9,8 +9,10 @@ const styles = css`
 `;
 
 const GlobalStyles = createGlobalStyle`
+
   ${normalize}
   ${styles}
+
 `;
 
 export default GlobalStyles;
