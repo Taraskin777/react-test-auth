@@ -1,15 +1,17 @@
 import type { AppProps } from "next/app";
 import GlobalStyles from "@/styles/GlobalStyles";
+import { wrapper } from "../store/store";
 
 import { Roboto } from "next/font/google";
 
 const roboto = Roboto({
   weight: "400",
   style: "normal",
-  subsets: ['latin'],
+  subsets: ["latin"],
+  display: "swap",
 });
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <main className={roboto.className}>
@@ -19,3 +21,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </>
   );
 }
+
+export default wrapper.withRedux(App);
