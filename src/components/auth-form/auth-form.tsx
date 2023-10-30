@@ -1,37 +1,45 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { useRouter } from "next/router";
 import { Title, Auth, Control, Submit, Error } from "./styled";
 
-export const AuthForm = (): JSX.Element => {
-  const [nonExistUser, setNonExistUser] = useState<boolean>(true);
-  const [shortPassword, setShortPassword] = useState<boolean>(false);
+import {
+  setNonExistUser,
+  setShortPassword,
+  selectAuthState,
+} from "../../store/authSlice";
 
+import { useDispatch, useSelector } from "react-redux";
+
+export const AuthForm = (): JSX.Element => {
   const enteredName = useRef<HTMLInputElement | null>(null);
   const enteredPassword = useRef<HTMLInputElement | null>(null);
 
   const router = useRouter();
 
-  const name: string = "testuser";
-  const password: string = "testpassword123";
+  const authState = useSelector(selectAuthState);
+
+  const { nonExistUser, shortPassword, name, password } = authState;
+
+  const dispatch = useDispatch();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
     if (enteredPassword.current && enteredPassword.current.value.length < 6) {
-      setNonExistUser(true);
-      setShortPassword(true);
+      dispatch(setNonExistUser(true));
+      dispatch(setShortPassword(true));
     } else {
-      setShortPassword(false);
+      dispatch(setShortPassword(false));
 
       if (enteredName.current?.value === name) {
         if (enteredPassword.current?.value === password) {
           router.push("/table");
         } else {
-          setNonExistUser(false);
+          dispatch(setNonExistUser(false));
           console.log("User does not exist");
         }
       } else {
-        setNonExistUser(false);
+        dispatch(setNonExistUser(false));
         console.log("User does not exist");
       }
     }
