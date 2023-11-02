@@ -1,24 +1,21 @@
 import { PrevNextPage } from "./styled";
 
-interface IPrevNext {
-  prev: string | null;
-  next: string | null;
-  setCurrentPage: (page: number) => void;
-  currentPage: number;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserListState, setCurrentPage } from "../../store/userListSlice";
 
-export const PrevNext = ({
-  prev,
-  next,
-  setCurrentPage,
-  currentPage,
-}: IPrevNext): JSX.Element => {
+export const PrevNext = (): JSX.Element => {
+  const dispatch = useDispatch();
+
+  const state = useSelector(selectUserListState);
+
+  const { currentPage, previous, next } = state;
+
   return (
     <PrevNextPage>
       <button
         onClick={() => {
-          if (prev) {
-            setCurrentPage(currentPage - 1);
+          if (previous) {
+            dispatch(setCurrentPage(currentPage - 1));
           }
         }}
       >
@@ -27,7 +24,7 @@ export const PrevNext = ({
       <button
         onClick={() => {
           if (next) {
-            setCurrentPage(currentPage + 1);
+            dispatch(setCurrentPage(currentPage + 1));
           }
         }}
       >

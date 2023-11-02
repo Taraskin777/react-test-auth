@@ -9,27 +9,27 @@ import {
 
 import { Results } from "../users-list";
 
+import { useSelector, useDispatch } from "react-redux";
+
+import { selectUserListState, setEditingUser } from "../../store/userListSlice";
+
 interface IEditUser {
-  name: string;
-  phone: string;
-  address: string;
-  birthday: string;
-  email: string;
   editingUser: Results;
-  setEditingUser: (user: Results) => void;
+
   handleSaveUser: (user: Results) => void;
 }
 
 export const EditUser = ({
-  name,
-  phone,
-  address,
-  birthday,
-  email,
   editingUser,
-  setEditingUser,
   handleSaveUser,
 }: IEditUser): JSX.Element => {
+  const dispatch = useDispatch();
+
+  const state = useSelector(selectUserListState);
+
+  const { name, phone_number, address, birthday_date, email } =
+    state.editingUser || {};
+
   return (
     <>
       <EditUserWrapper>
@@ -41,18 +41,18 @@ export const EditUser = ({
               ...editingUser,
               name: e.target.value,
             };
-            setEditingUser(updatedUser);
+            dispatch(setEditingUser(updatedUser));
           }}
         />
         <EditPhone
           type="text"
-          value={phone}
+          value={phone_number}
           onChange={(e) => {
             const updatedUser = {
               ...editingUser,
               phone_number: e.target.value,
             };
-            setEditingUser(updatedUser);
+            dispatch(setEditingUser(updatedUser));
           }}
         />
         <EditAddress
@@ -63,18 +63,18 @@ export const EditUser = ({
               ...editingUser,
               address: e.target.value,
             };
-            setEditingUser(updatedUser);
+            dispatch(setEditingUser(updatedUser));
           }}
         />
         <EditBirthday
           type="date"
-          value={birthday}
+          value={birthday_date}
           onChange={(e) => {
             const updatedUser = {
               ...editingUser,
               birthday_date: e.target.value,
             };
-            setEditingUser(updatedUser);
+            dispatch(setEditingUser(updatedUser));
           }}
         />
         <EditEmail
@@ -85,7 +85,7 @@ export const EditUser = ({
               ...editingUser,
               email: e.target.value,
             };
-            setEditingUser(updatedUser);
+            dispatch(setEditingUser(updatedUser));
           }}
         />
 

@@ -1,7 +1,16 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { TableHeader } from "../table-header";
 import { PageButtons } from "../page-buttons";
 import { PrevNext } from "../prev-next/prev-next";
+
+import {
+  setCurrentPage,
+  setData,
+  setEditingUser,
+  selectUserListState,
+} from "../../store/userListSlice";
+
+import { useDispatch, useSelector } from "react-redux";
 
 import { Table, Users, Name, Phone, Address, Birthday, Email } from "./styled";
 import { EditUser } from "../edit-user";
@@ -23,15 +32,16 @@ export interface Results {
 }
 
 export const UsersList = (): JSX.Element => {
-  const [data, setData] = useState<Data | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [editingUser, setEditingUser] = useState<Results | null>(null);
+  const dispatch = useDispatch();
+  const usersState = useSelector(selectUserListState);
 
-  console.log(editingUser);
-
-  const resultsPerPage = 10;
+  const data = usersState;
+  const currentPage = usersState.currentPage;
+  const editingUser = usersState.editingUser;
+  const resultsPerPage = usersState.resultsPerPage;
 
   useEffect(() => {
+    dispatch(setCurrentPage(currentPage));
     fetch(
       `https://technical-task-api.icapgroupgmbh.com/api/table/?limit=${resultsPerPage}&offset=${
         (currentPage - 1) * resultsPerPage
@@ -39,7 +49,7 @@ export const UsersList = (): JSX.Element => {
     )
       .then((response) => response.json())
       .then((responseData: Data) => {
-        setData(responseData);
+        dispatch(setData(responseData));
       })
       .catch((error) => {
         console.error("Помилка отримання даних:", error);
@@ -53,7 +63,7 @@ export const UsersList = (): JSX.Element => {
   const totalPages = Math.ceil(data.count / resultsPerPage);
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
+    dispatch(setCurrentPage(newPage));
   };
 
   const pageNumbers = Array.from(
@@ -62,10 +72,11 @@ export const UsersList = (): JSX.Element => {
   );
 
   const handleEditUser = (user: Results) => {
-    setEditingUser(user);
+    dispatch(setEditingUser(user));
   };
 
   const handleSaveUser = (updatedUser: Results) => {
+    dispatch(setEditingUser(updatedUser));
     fetch(
       `https://technical-task-api.icapgroupgmbh.com/api/table/${updatedUser.id}/`,
       {
@@ -78,15 +89,15 @@ export const UsersList = (): JSX.Element => {
     )
       .then((response) => response.json())
       .then((responseUser) => {
-        const updatedData = { ...data };
+        const updatedData = JSON.parse(JSON.stringify(data));
         const userIndex = updatedData.results.findIndex(
-          (user) => user.id === updatedUser.id
+          (user: Results) => user.id === updatedUser.id
         );
         if (userIndex !== -1) {
           updatedData.results[userIndex] = responseUser;
         }
-        setData(updatedData);
-        setEditingUser(null);
+        dispatch(setData(updatedData));
+        dispatch(setEditingUser(null));
       })
       .catch((error) => {
         console.error("Помилка оновлення даних:", error);
@@ -95,12 +106,7 @@ export const UsersList = (): JSX.Element => {
 
   return (
     <Table>
-      <PrevNext
-        prev={data.previous}
-        next={data.next}
-        setCurrentPage={setCurrentPage}
-        currentPage={currentPage}
-      />
+      <PrevNext />
 
       <TableHeader />
 
@@ -114,13 +120,7 @@ export const UsersList = (): JSX.Element => {
             <Email>{person.email}</Email>
             {editingUser && editingUser.id === person.id ? (
               <EditUser
-                name={editingUser.name}
-                phone={editingUser.phone_number}
-                address={editingUser.address}
-                birthday={editingUser.birthday_date}
-                email={editingUser.email}
                 editingUser={editingUser}
-                setEditingUser={setEditingUser}
                 handleSaveUser={handleSaveUser}
               />
             ) : (
