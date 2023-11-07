@@ -106,7 +106,7 @@ export const UsersList = (): JSX.Element => {
 
   return (
     <Table>
-      <PrevNext />
+      <PrevNext totalPages={totalPages} />
 
       <TableHeader />
 
