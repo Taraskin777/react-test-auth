@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { Title, Auth, Control, Submit, Error } from "./styled";
 
@@ -14,33 +14,57 @@ export const AuthForm = (): JSX.Element => {
   const enteredName = useRef<HTMLInputElement | null>(null);
   const enteredPassword = useRef<HTMLInputElement | null>(null);
 
+  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
   const router = useRouter();
 
   const authState = useSelector(selectAuthState);
 
-  const { nonExistUser, shortPassword, name, password } = authState;
+  const { nonExistUser, shortPassword } = authState;
 
   const dispatch = useDispatch();
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (enteredPassword.current && enteredPassword.current.value.length < 6) {
       dispatch(setNonExistUser(true));
       dispatch(setShortPassword(true));
+      setError("");
     } else {
       dispatch(setShortPassword(false));
 
-      if (enteredName.current?.value === name) {
-        if (enteredPassword.current?.value === password) {
+      try {
+        const response = await fetch(
+          "https://technical-task-api.icapgroupgmbh.com/api/login/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: enteredName.current?.value,
+              password: enteredPassword.current?.value,
+            }),
+          }
+        );
+
+        if (response.ok) {
+          // Successful login, navigate to the next page
           router.push("/table");
         } else {
-          dispatch(setNonExistUser(false));
-          console.log("User does not exist");
+          // Unsuccessful login, handle error
+          const data = await response.json();
+          setError(data.error || "Login failed");
         }
-      } else {
-        dispatch(setNonExistUser(false));
-        console.log("User does not exist");
+      } catch (error) {
+        console.error("An error occurred during login:", error);
+        setError("An error occurred during login");
       }
     }
   };
@@ -77,6 +101,7 @@ export const AuthForm = (): JSX.Element => {
       {shortPassword && (
         <Error>Password cannot be shorter than six characters.</Error>
       )}
+      {error && <Error>{error}</Error>}
     </>
   );
 };

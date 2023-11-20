@@ -8,6 +8,7 @@ interface TotalPages {
   totalPages: number;
 }
 
+
 export const PrevNext = ({ totalPages }: TotalPages): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -17,7 +18,7 @@ export const PrevNext = ({ totalPages }: TotalPages): JSX.Element => {
   const state = useSelector(selectUserListState);
 
   const { currentPage, previous, next } = state;
-
+ 
   useEffect(() => {
     setFirstPage(currentPage === 1);
     if (currentPage === totalPages) {

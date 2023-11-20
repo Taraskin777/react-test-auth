@@ -5,15 +5,11 @@ import { AppState } from "./store";
 interface AuthData {
   nonExistUser: boolean;
   shortPassword: boolean;
-  name: string;
-  password: string;
 }
 
 const initialState: AuthData = {
   nonExistUser: true,
   shortPassword: false,
-  name: "testuser",
-  password: "testpassword123",
 };
 
 export const authSlice = createSlice({
