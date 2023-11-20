@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { Title, Auth, Control, Submit, Error } from "./styled";
+import { Title, Auth, Control, Submit, Error, PassWrapper } from "./styled";
 
 import {
   setNonExistUser,
@@ -80,12 +80,17 @@ export const AuthForm = (): JSX.Element => {
           </Control>
           <Control>
             <label htmlFor="password">Your Password</label>
-            <input
-              type="password"
-              id="password"
-              required
-              ref={enteredPassword}
-            />
+            <PassWrapper>
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                required
+                ref={enteredPassword}
+              />
+              <button type="button" onClick={togglePasswordVisibility}>
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </PassWrapper>
           </Control>
           <Submit>
             <button type="submit">Sign In</button>

@@ -53,12 +53,25 @@ export const Submit = styled.div`
   }
 `;
 
+export const PassWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  button {
+    cursor: pointer;
+    position: absolute;
+    right: -55px;
+    height: 100%;
+    border: none;
+    background-color: inherit;
+  }
+`;
 
 export const Error = styled.div`
- color: red;
- margin: 30px;
- position: absolute;
- top: 70vh;
- font-size:20px;
- font-weight: 600;
-`
+  color: red;
+  margin: 30px;
+  position: absolute;
+  top: 75vh;
+  font-size: 20px;
+  font-weight: 500;
+`;
